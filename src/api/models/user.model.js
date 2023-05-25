@@ -22,8 +22,6 @@ const UserSchema = new Schema(
     image: { type: String },
     confirmationCode: { type: Number, required: true },
     check: { type: Boolean, default: false },
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
-    scores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Score' }],
   },
   {
     timestamps: true,
