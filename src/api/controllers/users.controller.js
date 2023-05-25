@@ -123,7 +123,7 @@ const checkNewUser = async (req, res, next) => {
           check: false,
           delete: (await User.findById(userExists._id))
             ? 'error delete user'
-            : 'ok delete user',
+            : `${deleteUser} fue borrado`,
         });
       }
     }
@@ -270,7 +270,7 @@ const sendPassword = async (req, res, next) => {
       text: `User: ${userDb.name}. Your new code login is ${passwordSecure} Hemos enviado esto porque tenemos una solicitud de cambio de contraseña, si no has sido ponte en contacto con nosotros, gracias.`,
     };
     // enviamos el correo y dentro del envio gestionamos el guardado de la nuevacontraseña
-    transporter.sendMail(mailOptions, async function (error, info) {
+    transporter.sendMail(mailOptions, async function (error) {
       if (error) {
         console.log(error);
 

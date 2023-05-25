@@ -46,9 +46,11 @@ app.use(express.urlencoded({ limit: '5mb', extended: true }));
 //! ------ LAS ROUTAS -------------------------------------------
 const UserRoutes = require('./src/api/routes/user.routes');
 const ProductRoutes = require('./src/api/routes/product.routes');
+const CartRoutes = require('./src/api/routes/cart.routes');
 
 app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/products', ProductRoutes);
+app.use('/api/v1/cart', CartRoutes);
 app.use('*', (req, res, next) => {
   const error = new Error('Route not found');
   error.status = 404;
