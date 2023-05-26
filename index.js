@@ -5,6 +5,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connect = require('./src/utils/db');
 const { configCloudinary } = require('./src/middlewares/files.middleware');
+const path = require('path');
 
 dotenv.config();
 
@@ -18,6 +19,13 @@ connect();
 const cors = require('cors');
 
 app.use(cors());
+
+app.set('views', path.join(__dirname, 'src/views'));
+app.set('view engine', 'ejs');
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
 
 app.use((req, res, next) => {
   // con el asterisco les estamos diendo en la header que puede entrar a nuestro backend cualquier cliente
