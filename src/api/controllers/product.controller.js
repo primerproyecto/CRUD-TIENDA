@@ -2,10 +2,21 @@ const Product = require('../models/product.model');
 const setError = require('../../helpers/handle-error');
 const { deleteImgCloudinary } = require('../../middlewares/files.middleware');
 
-// RECIBIR TODOS LOS PRODUCTOS DEL CARRITO
+// RECIBIR TODOS LOS PRODUCTOS DEL CARRITO Y TAMBIÉN FILTRA POR CATEGORIA SI SE LE PASA QUERY
 const getAllProducts = async (req, res, next) => {
+  const categoria = req.query.categoria;
+  let allProducts = [];
+
   try {
-    const allProducts = await Product.find();
+    if (categoria) {
+      allProducts = await Product.find({
+        categories: {
+          $in: [categoria],
+        },
+      });
+    } else {
+      allProducts = await Product.find();
+    }
     if (allProducts) {
       return res.status(404).json(allProducts);
     } else {
