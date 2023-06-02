@@ -426,6 +426,13 @@ const deleteUser = async (req, res, next) => {
     return next(error);
   }
 };
+
+const allUsers = async (req, res) => {
+  const usuarios = await User.find().populate('carrito');
+
+  res.status(200).json(usuarios);
+};
+
 module.exports = {
   register,
   checkNewUser,
@@ -436,4 +443,5 @@ module.exports = {
   modifyPassword,
   update,
   deleteUser,
+  allUsers,
 };

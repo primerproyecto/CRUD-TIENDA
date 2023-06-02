@@ -10,8 +10,9 @@ const {
   modifyPassword,
   update,
   deleteUser,
+  allUsers,
 } = require('../controllers/users.controller');
-const { isAuth } = require('../../middlewares/auth.middleware');
+const { isAuth, isAuthAdmin } = require('../../middlewares/auth.middleware');
 
 const UserRoutes = express.Router();
 
@@ -22,7 +23,8 @@ UserRoutes.post('/login', login);
 UserRoutes.get('/forgotpassword', forgotPassword);
 UserRoutes.patch('/changepassword', [isAuth], modifyPassword);
 UserRoutes.patch('/update/update', [isAuth], upload.single('image'), update);
-UserRoutes.delete('/', [isAuth], deleteUser);
+UserRoutes.delete('/', [isAuthAdmin], deleteUser);
+UserRoutes.get('/', allUsers);
 
 //! -------REDIRECT --------------------
 

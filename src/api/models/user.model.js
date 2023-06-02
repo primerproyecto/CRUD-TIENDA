@@ -22,6 +22,12 @@ const UserSchema = new Schema(
     image: { type: String },
     confirmationCode: { type: Number, required: true },
     check: { type: Boolean, default: false },
+    carrito: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
   },
   {
     timestamps: true,
