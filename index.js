@@ -6,9 +6,9 @@ const dotenv = require('dotenv');
 const connect = require('./src/utils/db');
 const { configCloudinary } = require('./src/middlewares/files.middleware');
 const path = require('path');
+const Product = require('./src/api/models/product.model');
 
 dotenv.config();
-
 //! ------TRAERNOS EL PORT, CREAR EL SERVER WEB, CONECTAR LA DB  y configurar cloudinary
 const PORT = process.env.PORT;
 configCloudinary();
@@ -30,8 +30,13 @@ app.get('/', function (req, res) {
 app.get('/agregarACarrito', function (req, res) {
   res.render('partials/addToCart');
 });
-app.get('/agregarProducto', function (req, res) {
-  res.render('partials/addProduct');
+app.get('/agregarProducto', async (req, res) => {
+  const data = await Product.find();
+  res.render('partials/addProduct', { data });
+});
+app.get('/agregarUsuario', async (req, res) => {
+  const data = await User.find();
+  res.render('partials/addUser', { data });
 });
 
 app.use((req, res, next) => {
@@ -62,6 +67,7 @@ app.use(express.urlencoded({ limit: '5mb', extended: false }));
 const UserRoutes = require('./src/api/routes/user.routes');
 const ProductRoutes = require('./src/api/routes/product.routes');
 const CartRoutes = require('./src/api/routes/cart.routes');
+const User = require('./src/api/models/user.model');
 
 app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/products', ProductRoutes);

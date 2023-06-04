@@ -10,7 +10,7 @@ const ProductSchema = new Schema(
     categories: { type: String, enum: ['Electrónico', 'Complementos'] },
     size: { type: String },
     color: { type: String },
-    price: { type: Number, required: true },
+    price: { type: Number, required: true, min: 10 },
   },
   {
     timestamps: true,

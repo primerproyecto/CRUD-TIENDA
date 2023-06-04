@@ -1,0 +1,21 @@
+<%- include('header.ejs') %>
+  <body>
+    <%- include('navigation.ejs') %>
+    <div class="container">
+      <h1>CRUD TIENDA</h1>
+      <section><h2>Todos los Usuarios</h2></section>
+      
+      <ol>
+        <% for (let i = 0; i < data.length; i++) { %>
+          <li><%= data[i].name %> - <%= data[i].email %>  - <%= data[i].rol %></li>
+        <% } %>
+      </ol>
+      
+      <section>
+        <h2>Agregar Usuario</h2>
+
+        
+      </section>
+    </div>
+  </body>
+</html>
