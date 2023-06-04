@@ -52,8 +52,9 @@
         <code>
           const CartSchema = new Schema( { userId: { type:
           mongoose.Schema.Types.ObjectId, required: true, ref: 'User', },
-          products: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Product', },
-          ], }, { timestamps: false, } );
+          products: [ { productId: { type: mongoose.Schema.Types.ObjectId, ref:
+          'Product', }, cantidad: { type: Number, default: 1, }, }, ], }, {
+          timestamps: false, } );
         </code>
         <h3>Producto</h3>
         <code>
@@ -94,7 +95,19 @@
             <strong>PRIVADA</strong>
             <p>
               POST. Para agregar un producto del catálogo a un determinado
-              carrito, habrá que pasarle el id del carrito y el id del producto
+              carrito, habrá que pasarle el id del carrito y el id del producto.
+              Si añadimos más de una vez un producto, se aumentará en uno la
+              cantidad.
+            </p>
+          </li>
+          <li>
+            Eliminar un producto al carrito de un usuario pasando el id:
+            <strong>PRIVADA</strong>
+            <p>
+              PATCH. Para eliminar un producto del catálogo a un determinado
+              carrito, habrá que pasarle el id del carrito y el id del producto.
+              Si la cantidad de este producto es menor que cero lo borramos y
+              sino aumentamos en uno la cantidad.
             </p>
           </li>
         </ul>

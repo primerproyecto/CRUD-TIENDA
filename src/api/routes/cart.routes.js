@@ -14,11 +14,7 @@ const CartRoutes = express.Router();
 CartRoutes.post('/agregar', createCarrito);
 CartRoutes.delete('/:id', isAuth, borrarCarrito);
 CartRoutes.get('/:id', isAuth, todoMiCarrito);
-CartRoutes.post(
-  '/:carritoId/agregar-producto',
-  isAuth,
-  agregarProductoAlCarrito
-);
+CartRoutes.post('/:carritoId', isAuth, agregarProductoAlCarrito);
 CartRoutes.patch('/:carritoId', isAuth, quitarProductoDelCarrito);
 
 CartRoutes.get('/', todosLosCarritos);

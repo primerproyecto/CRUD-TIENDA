@@ -11,8 +11,14 @@ const CartSchema = new Schema(
     },
     products: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product',
+        },
+        cantidad: {
+          type: Number,
+          default: 1,
+        },
       },
     ],
   },

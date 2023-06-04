@@ -6,8 +6,19 @@ const setError = require('../../helpers/handle-error');
 /** PARA CREAR UN CARRITO SE NECESITA, A PARTE DE UN POQUITO DE GRACIA, UN userId UN ARRAY DE PRODUCTO  POR EL REQ.BODY  */
 const createCarrito = async (req, res, next) => {
   try {
+    /** COMPROBAR QUE NO HAYA YA UN CARRITO CON EL MISMO ID */
+    /* const estaYaCreado = await Cart.find({ userId: req.body.userId });
+    if (estaYaCreado) {
+      res.json(`Ya existe un carrito con el userId ${req.body.userId}`);
+    } else {
+      const nuevoCarrito = new Cart(req.body);
+      const creadoCarrito = await nuevoCarrito.save();
+
+      res.status(200).json(creadoCarrito);
+    } */
     const nuevoCarrito = new Cart(req.body);
     const creadoCarrito = await nuevoCarrito.save();
+
     res.status(200).json(creadoCarrito);
   } catch (error) {
     return next(
@@ -93,19 +104,30 @@ SE PASA POR BODY EL productId y por PARAMS el carritoId
 const agregarProductoAlCarrito = async (req, res) => {
   try {
     const carritoId = req.params.carritoId;
-    const productoId = req.body.productoId;
+    const productoId = req.body.products[0].productId;
 
-    const carrito = await Cart.findByIdAndUpdate(
-      carritoId,
-      { $push: { products: productoId } },
-      { new: true }
-    ).populate('products');
-
-    if (!carrito) {
-      return res.status(404).json({ mensaje: 'Carrito no encontrado' });
+    const karrito = await Cart.findById(carritoId);
+    //SI TIENE EL PRODUCTO QUE LE MANDO LE SUMO UNO A LA CANTIDAD
+    karrito.products?.map((product) => {
+      if (product.productId.toString() == productoId) {
+        product.cantidad = product.cantidad + 1;
+      }
+    });
+    //VUELVO A COMPROBAR SI YA ESTA AÑADIDO Y SI NO LO ESTA LO AÑADIMOS CON UN PUSH
+    const existeProducto = karrito.products.some(
+      (product) => product.productId.toString() == productoId
+    );
+    if (!existeProducto) {
+      karrito.products.push({
+        productId: productoId,
+        cantidad: 1,
+      });
     }
 
-    res.json(carrito);
+    await karrito.save();
+    res.status(200).json(karrito);
+
+    /* res.json(karrito); */
   } catch (error) {
     res
       .status(500)
@@ -135,17 +157,29 @@ SE PASA POR BODY EL productId y por PARAMS el carritoId
 */
 const quitarProductoDelCarrito = async (req, res) => {
   try {
-    const carrito = await Cart.findByIdAndUpdate(
-      req.params.carritoId,
-      { $pull: { products: req.body.productId } },
-      { new: true }
-    );
+    const carritoId = req.params.carritoId;
+    const productoId = req.body.productId;
 
-    if (!carrito) {
-      return res.status(404).json({ mensaje: 'Carrito no encontrado' });
-    }
+    const karrito = await Cart.findById(carritoId);
+    //SI TIENE EL PRODUCTO QUE LE MANDO LE SUMO UNO A LA CANTIDAD
+    karrito.products?.map((product) => {
+      if (product.productId.toString() == productoId) {
+        if (product.cantidad > 1) {
+          product.cantidad = product.cantidad - 1;
+        } else {
+          const existeProducto = karrito.products.filter(
+            (product) => product.productId.toString() !== productoId
+          );
+          karrito.products = existeProducto;
+        }
+      }
+    });
+    await karrito.save();
 
-    res.json(carrito);
+    res.status(200).json({
+      karrito,
+      message: 'La operación de borrado se ha realizado con éxito',
+    });
   } catch (error) {
     res
       .status(500)
