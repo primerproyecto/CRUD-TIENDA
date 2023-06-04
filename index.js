@@ -23,8 +23,15 @@ app.use(cors());
 app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
+//RUTAS EJS
 app.get('/', function (req, res) {
-  res.render('index');
+  res.render('index', { user: req.user });
+});
+app.get('/agregarACarrito', function (req, res) {
+  res.render('partials/addToCart');
+});
+app.get('/agregarProducto', function (req, res) {
+  res.render('partials/addProduct');
 });
 
 app.use((req, res, next) => {

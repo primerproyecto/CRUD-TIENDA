@@ -13,7 +13,7 @@ const ProductRoutes = express.Router();
 
 ProductRoutes.get('/getAllProducts', getAllProducts);
 ProductRoutes.get('/:id', getOneProduct);
-ProductRoutes.post('/new', isAuthAdmin, upload.single('image'), postOneProduct);
+ProductRoutes.post('/new', upload.single('image'), postOneProduct);
 ProductRoutes.put('/:id', isAuthAdmin, updateOneProduct);
 ProductRoutes.delete('/:id', isAuthAdmin, deleteOneProduct);
 

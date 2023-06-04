@@ -1,0 +1,30 @@
+<%- include('header.ejs') %>
+  <body>
+    <%- include('navigation.ejs') %>
+    <div class="container">
+      <h1>CRUD TIENDA</h1>
+      <p>
+       Agregar un producto al carrito
+      </p>
+      <h2>Agregar producto al carrito</h2>
+      <section>
+
+          <form action="/api/v1/cart" method="post">
+            <div class="form-group">
+              <label for="carritoId">CarritoId</label>
+              <input type="text" class="form-control" name="carritoId"  id="carritoId" aria-describedby="emailHelp" placeholder="Numero de carritoId">
+            </div>
+            <div class="form-group">
+              <label for="productId">Password</label>
+              <input type="text" class="form-control" name="productId" id="productId" placeholder="Product Id">
+            </div>
+            <br>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            
+          </form>
+      </section>
+    </div>
+  </body>
+</html>
