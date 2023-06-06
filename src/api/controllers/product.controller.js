@@ -50,6 +50,12 @@ const getOneProduct = async (req, res, next) => {
 const postOneProduct = async (req, res, next) => {
   try {
     let catchImg = req.file?.path;
+
+    // COMPROBAMOS QUE NO HAYA OTRO PRODUCTO CON EL MISMO TÍTULO. Preguntar a Pedro
+    /* const estaYaenCatalogo = await Product.find({ title: req.body.title });
+    if (estaYaenCatalogo) {
+      res.json('el producto ya está en el catálogo');
+    } else { */
     const nuevoProducto = new Product(req.body);
 
     if (req.file) {
@@ -63,6 +69,7 @@ const postOneProduct = async (req, res, next) => {
       deleteImgCloudinary(catchImg);
     }
     res.status(200).json(guardadoProducto);
+    /*  } */
   } catch (error) {
     return next(
       setError(

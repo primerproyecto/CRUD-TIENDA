@@ -6,34 +6,25 @@ const setError = require('../../helpers/handle-error');
 /** PARA CREAR UN CARRITO SE NECESITA, A PARTE DE UN POQUITO DE GRACIA, UN userId UN ARRAY DE PRODUCTO  POR EL REQ.BODY  */
 const createCarrito = async (req, res, next) => {
   try {
-    /** COMPROBAR QUE NO HAYA YA UN CARRITO CON EL MISMO ID */
-    /* const estaYaCreado = await Cart.find({ userId: req.body.userId });
-    if (estaYaCreado) {
-      res.json(`Ya existe un carrito con el userId ${req.body.userId}`);
-    } else {
-      const nuevoCarrito = new Cart(req.body);
-      const creadoCarrito = await nuevoCarrito.save();
-
-      res.status(200).json(creadoCarrito);
-    } */
     const nuevoCarrito = new Cart(req.body);
+    const carritoId = nuevoCarrito._id;
+    const userId = req.body.userId;
+    //ACTUALIZO LA PROPIEDAD CARRITO DEL MODELO USUARIO
+    const actualizoUsuarioModel = await User.findByIdAndUpdate(userId, {
+      carrito: carritoId,
+    });
+    if (!actualizoUsuarioModel) {
+      res.json(
+        `Ha habido un problema y no podemos vincular el carrito al usuario suministrado ${userId}`
+      );
+    }
 
-    const idACambiar = await User.find({ _id: req.body.userId });
-
-    idACambiar.carrito = 'manuel';
-    await nuevoCarrito.save();
-    console.log('idACambiar', idACambiar);
-    console.log('idACambiar', nuevoCarrito._id.toString());
-    /*  if (idACambiar) {
-      idACambiar.carrito = nuevoCarrito._id.toString();
-      const aver = await idACambiar.save();
-      console.log('cambiado aver', aver);
-    } else {
-      console.log('No hemos encontrado ningun usuario');
-    } */
     const creadoCarrito = await nuevoCarrito.save();
-
-    res.status(200).json(creadoCarrito);
+    if (creadoCarrito) {
+      res.status(200).json(creadoCarrito);
+    } else {
+      res.json('No se ha podido crear el carrito');
+    }
   } catch (error) {
     return next(
       setError(
