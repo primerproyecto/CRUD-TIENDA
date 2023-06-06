@@ -450,7 +450,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 const allUsers = async (req, res) => {
-  const usuarios = await User.find().populate('carrito');
+  const usuarios = await User.find();
 
   res.status(200).json(usuarios);
 };

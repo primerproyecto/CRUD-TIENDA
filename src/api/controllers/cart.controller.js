@@ -17,6 +17,20 @@ const createCarrito = async (req, res, next) => {
       res.status(200).json(creadoCarrito);
     } */
     const nuevoCarrito = new Cart(req.body);
+
+    const idACambiar = await User.find({ _id: req.body.userId });
+
+    idACambiar.carrito = 'manuel';
+    await nuevoCarrito.save();
+    console.log('idACambiar', idACambiar);
+    console.log('idACambiar', nuevoCarrito._id.toString());
+    /*  if (idACambiar) {
+      idACambiar.carrito = nuevoCarrito._id.toString();
+      const aver = await idACambiar.save();
+      console.log('cambiado aver', aver);
+    } else {
+      console.log('No hemos encontrado ningun usuario');
+    } */
     const creadoCarrito = await nuevoCarrito.save();
 
     res.status(200).json(creadoCarrito);
