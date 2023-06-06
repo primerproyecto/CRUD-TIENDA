@@ -69,7 +69,6 @@ const agregarACarrito = async (req, res, next) => {
 const todoMiCarrito = async (req, res, next) => {
   try {
     const usuario = await Cart.findById(req.params.id).populate('products');
-    console.log(usuario);
 
     res.status(200).json(usuario);
   } catch (error) {
@@ -88,6 +87,10 @@ const borrarCarrito = async (req, res, next) => {
     const carritoId = req.body.carritoId;
 
     const carritoDeUsuarioActualizado = await Cart.findOneAndDelete(carritoId);
+
+    //ACTUALIZAR LA PROPIEDAD CARRITO DEL USUARIO. RECUPERAMOS EL ID DEL USUARIO EN EL REQUEST.USER
+    const user_id = req.user.carrito.toString();
+    User.findByIdAndUpdate(user_id, { carrito: [] });
 
     if (!carritoDeUsuarioActualizado) {
       return res.status(404).json({ mensaje: 'Carrito no encontrado' });
