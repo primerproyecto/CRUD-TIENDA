@@ -149,7 +149,7 @@ const todosLosCarritos = async (req, res) => {
       return res.status(404).json({ mensaje: 'Carrito no encontrado' });
     }
 
-    res.status(400).json(todosLosCarritos);
+    res.status(200).json(todosLosCarritos);
   } catch (error) {
     res
       .status(500)

@@ -18,7 +18,7 @@ const getAllProducts = async (req, res, next) => {
       allProducts = await Product.find();
     }
     if (allProducts) {
-      return res.status(404).json(allProducts);
+      return res.status(200).json(allProducts);
     } else {
       return res.status(200).json('No hay');
     }
@@ -36,7 +36,7 @@ const getAllProducts = async (req, res, next) => {
 const getOneProduct = async (req, res, next) => {
   try {
     const productoSolicitado = await Product.findById(req.params.id);
-    return res.status(404).json(productoSolicitado);
+    return res.status(200).json(productoSolicitado);
   } catch (error) {
     return next(
       setError(
@@ -52,24 +52,29 @@ const postOneProduct = async (req, res, next) => {
     let catchImg = req.file?.path;
 
     // COMPROBAMOS QUE NO HAYA OTRO PRODUCTO CON EL MISMO TÍTULO. Preguntar a Pedro
-    /* const estaYaenCatalogo = await Product.find({ title: req.body.title });
-    if (estaYaenCatalogo) {
+
+    const estaYaenCatalogo = await Product.find({ title: req.body.title });
+    if (estaYaenCatalogo.length > 1) {
       res.json('el producto ya está en el catálogo');
-    } else { */
-    const nuevoProducto = new Product(req.body);
-
-    if (req.file) {
-      nuevoProducto.image = req.file.path;
     } else {
-      nuevoProducto.image = 'https://pic.onlinewebfonts.com/svg/img_181369.png';
-    }
-    const guardadoProducto = await nuevoProducto.save();
+      const nuevoProducto = new Product(req.body);
 
-    if (guardadoProducto === null) {
-      deleteImgCloudinary(catchImg);
+      if (req.file) {
+        nuevoProducto.image = req.file.path;
+      } else {
+        nuevoProducto.image =
+          'https://pic.onlinewebfonts.com/svg/img_181369.png';
+      }
+      try {
+        const guardadoProducto = await nuevoProducto.save();
+        if (guardadoProducto === null) {
+          deleteImgCloudinary(catchImg);
+        }
+        res.status(200).json(guardadoProducto);
+      } catch (error) {
+        res.json('el producto ya está en el catálogo');
+      }
     }
-    res.status(200).json(guardadoProducto);
-    /*  } */
   } catch (error) {
     return next(
       setError(
