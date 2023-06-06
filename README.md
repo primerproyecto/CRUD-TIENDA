@@ -30,6 +30,11 @@ const UserSchema = new Schema(
     image: { type: String },
     confirmationCode: { type: Number, required: true },
     check: { type: Boolean, default: false },
+    carrito: {
+      type: Schema.Types.ObjectId,
+      ref: 'Cart',
+      default: undefined,
+    },
   },
   {
     timestamps: true,
@@ -43,9 +48,8 @@ const CartSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
       required: true,
-      unique: true,
+      ref: 'User',
     },
     products: [
       {
@@ -53,7 +57,7 @@ const CartSchema = new Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Product',
         },
-        quantity: {
+        cantidad: {
           type: Number,
           default: 1,
         },
@@ -61,7 +65,7 @@ const CartSchema = new Schema(
     ],
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 ````
@@ -69,15 +73,16 @@ const CartSchema = new Schema(
 3. Modelo de producto
 
 ```
-const ProductSchema = new Schema(
+
+onst ProductSchema = new Schema(
   {
     title: { type: String, required: true, unique: true },
     desc: { type: String, required: true },
-    img: { type: String, required: true },
+    image: { type: String },
     categories: { type: String, enum: ['Electrónico', 'Complementos'] },
     size: { type: String },
     color: { type: String },
-    price: { type: Number, required: true },
+    price: { type: Number, required: true, min: 10 },
   },
   {
     timestamps: true,
@@ -102,8 +107,8 @@ Un usuario con email y contraseña se podrá registrar en un proceso en el que l
 ### Endpoint del carrito
 El usario registrado con rol de user, podrá agregar, quitar productos al catálogo general.
 
-1. Agregar (privada) -> POST --> /agregar
-2. Quitar (privada)  -> DELETE --> /:id
+1. Agregar a un carrito concreto, si se pasa más de una vez, se aumentará en uno la cantidad. (privada) -> POST --> /agregar
+2. Quitar de un carrito concreto un prodcuto hasta que la cantidad este sea igual a cero (privada)  -> DELETE --> /:id
 3. Recibir carrrito de un usuario (privada) --> GET --> /:id
 
 ### Endpoint de productos
