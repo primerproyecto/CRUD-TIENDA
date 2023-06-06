@@ -126,7 +126,7 @@ const agregarProductoAlCarrito = async (req, res) => {
       (product) => product.productId.toString() == productoId
     );
     if (!existeProducto) {
-      karrito.products.push({
+      karrito.products.push(...karrito.products, {
         productId: productoId,
         cantidad: 1,
       });
