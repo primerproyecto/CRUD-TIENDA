@@ -8,11 +8,22 @@
       </p>
       <section><h2>Todos los productos</h2></section>
       
-      <ol>
-        <% for (let i = 0; i < data.length; i++) { %>
-          <li><%= data[i].title %> - <%= data[i].price %></li>
-        <% } %>
-      </ol>
+      <div class="container">
+        <div class="row">
+          <% for (let i = 0; i < data.length; i++) { %>
+            <div class="card col-sm">
+              <a href="mostrarProducto/<%- data[i].title %>" ><img class="img-fluid card-img-top" src="<%= data[i].image %>" alt="Card image cap"></a>
+              <div class="card-body">
+                <h5 class="card-title"><%= data[i].title %> - <%= data[i].price %></h5>
+                <p class="card-text"><%= data[i].Descripcion %></p>
+                  <a href="mostrarProducto/<%- data[i].title %>" class="btn btn-primary"><%= data[i].price %></a>
+                </div>
+              </div>
+              <% } %>
+            </div>
+        </div>
+      
+      
       
       <section>
         <h2>Agregar producto</h2>

@@ -2,14 +2,29 @@
   <body>
     <%- include('navigation.ejs') %>
     <div class="container">
-      <h1>CRUD TIENDA</h1>
-      <p>
-       Agregar un producto al carrito
-      </p>
+      <section><h2>Carritos</h2></section>
+      
+      <ol>
+        <% for (let i = 0; i < data.length; i++) { %>
+          <li>Id del carrito: <strong><%= data[i].userId %>  </strong>
+            <ol>
+             <% for( let index = 0; index < data[i].products.length; index++ ) { %>
+              <li>Id de producto: <strong><%= data[i].products[index].productId %></strong> - <strong>Cantidad: <%= data[i].products[index].cantidad %> </strong></li>
+             <% } %>
+            </ol>
+          </li>
+        <% } %>
+      </ol>
+      
+      <section>
       <h2>Agregar producto al carrito</h2>
       <section>
 
-          <form action="/api/v1/cart" method="post">
+          <form action="api/v1/cart/agregar" method="post">
+            <div class="form-group">
+              <label for="userId">UserId al que adjudicar el carrito</label>
+              <input type="text" class="form-control" name="userId" id="userId" placeholder="Product Id">
+            </div>
             <div class="form-group">
               <label for="carritoId">CarritoId</label>
               <input type="text" class="form-control" name="carritoId"  id="carritoId" aria-describedby="emailHelp" placeholder="Numero de carritoId">

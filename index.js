@@ -27,8 +27,9 @@ app.set('view engine', 'ejs');
 app.get('/', function (req, res) {
   res.render('index', { user: req.user });
 });
-app.get('/agregarACarrito', function (req, res) {
-  res.render('partials/addToCart');
+app.get('/agregarACarrito', async function (req, res) {
+  const data = await Cart.find();
+  res.render('partials/addToCart', { data });
 });
 app.get('/agregarProducto', async (req, res) => {
   const data = await Product.find();
@@ -37,6 +38,10 @@ app.get('/agregarProducto', async (req, res) => {
 app.get('/agregarUsuario', async (req, res) => {
   const data = await User.find();
   res.render('partials/addUser', { data });
+});
+app.get('/mostrarProducto/:title', async (req, res) => {
+  const data = await Product.find({ title: req.params.title });
+  res.render('partials/showProduct', { data });
 });
 
 app.use((req, res, next) => {
@@ -68,6 +73,7 @@ const UserRoutes = require('./src/api/routes/user.routes');
 const ProductRoutes = require('./src/api/routes/product.routes');
 const CartRoutes = require('./src/api/routes/cart.routes');
 const User = require('./src/api/models/user.model');
+const Cart = require('./src/api/models/cart.model');
 
 app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/products', ProductRoutes);

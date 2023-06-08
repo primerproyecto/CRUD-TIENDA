@@ -6,7 +6,10 @@ const setError = require('../../helpers/handle-error');
 /** PARA CREAR UN CARRITO SE NECESITA, A PARTE DE UN POQUITO DE GRACIA, UN userId UN ARRAY DE PRODUCTO  POR EL REQ.BODY  */
 const createCarrito = async (req, res, next) => {
   try {
-    const nuevoCarrito = new Cart(req.body);
+    const nuevoCarrito = new Cart({
+      userId: req.body.userId,
+      products: [],
+    });
     const carritoId = nuevoCarrito._id;
     const userId = req.body.userId;
     //ACTUALIZO LA PROPIEDAD CARRITO DEL MODELO USUARIO
