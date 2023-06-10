@@ -43,6 +43,9 @@ app.get('/mostrarProducto/:title', async (req, res) => {
   const data = await Product.find({ title: req.params.title });
   res.render('partials/showProduct', { data });
 });
+app.get('/login', async (req, res) => {
+  res.render('partials/login');
+});
 
 app.use((req, res, next) => {
   // con el asterisco les estamos diendo en la header que puede entrar a nuestro backend cualquier cliente

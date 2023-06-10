@@ -6,7 +6,7 @@
       
       <ol>
         <% for (let i = 0; i < data.length; i++) { %>
-          <li>Id del carrito: <strong><%= data[i].userId %>  </strong>
+          <li> Id de carrito: <strong><%= data[i].id %> </strong>- Id del usuaio: <strong><%= data[i].userId %>  </strong>
             <ol>
              <% for( let index = 0; index < data[i].products.length; index++ ) { %>
               <li>Id de producto: <strong><%= data[i].products[index].productId %></strong> - <strong>Cantidad: <%= data[i].products[index].cantidad %> </strong></li>

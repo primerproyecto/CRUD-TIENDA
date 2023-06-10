@@ -6,7 +6,6 @@ const { deleteImgCloudinary } = require('../../middlewares/files.middleware');
 const getAllProducts = async (req, res, next) => {
   const categoria = req.query.categoria;
   let allProducts = [];
-
   try {
     if (categoria) {
       allProducts = await Product.find({
