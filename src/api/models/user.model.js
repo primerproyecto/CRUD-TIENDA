@@ -25,7 +25,7 @@ const UserSchema = new Schema(
     carrito: {
       type: Schema.Types.ObjectId,
       ref: 'Cart',
-      default: undefined,
+      default: null,
     },
   },
   {

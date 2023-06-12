@@ -113,6 +113,7 @@ const borrarCarrito = async (req, res, next) => {
 SE PASA POR BODY EL productId y por PARAMS el carritoId
 */
 const agregarProductoAlCarrito = async (req, res) => {
+  console.log('que viene en el user', req.user);
   try {
     const carritoId = req.params.carritoId;
     const productoId = req.body.products[0].productId;

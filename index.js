@@ -7,6 +7,7 @@ const connect = require('./src/utils/db');
 const { configCloudinary } = require('./src/middlewares/files.middleware');
 const path = require('path');
 const Product = require('./src/api/models/product.model');
+const { isAuthAdmin } = require('./src/middlewares/auth.middleware');
 
 dotenv.config();
 //! ------TRAERNOS EL PORT, CREAR EL SERVER WEB, CONECTAR LA DB  y configurar cloudinary
@@ -27,19 +28,19 @@ app.set('view engine', 'ejs');
 app.get('/', function (req, res) {
   res.render('index', { user: req.user });
 });
-app.get('/agregarACarrito', async function (req, res) {
+app.get('/agregarACarrito', isAuthAdmin, async function (req, res) {
   const data = await Cart.find();
   res.render('partials/addToCart', { data });
 });
-app.get('/agregarProducto', async (req, res) => {
+app.get('/agregarProducto', isAuthAdmin, async (req, res) => {
   const data = await Product.find();
   res.render('partials/addProduct', { data });
 });
-app.get('/agregarUsuario', async (req, res) => {
+app.get('/agregarUsuario', isAuthAdmin, async (req, res) => {
   const data = await User.find();
   res.render('partials/addUser', { data });
 });
-app.get('/mostrarProducto/:title', async (req, res) => {
+app.get('/mostrarProducto/:title', isAuthAdmin, async (req, res) => {
   const data = await Product.find({ title: req.params.title });
   res.render('partials/showProduct', { data });
 });
