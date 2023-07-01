@@ -224,6 +224,8 @@ const login = async (req, res, next) => {
             email,
             _id: user._id,
             rol: user.rol,
+            carrito: user.carrito,
+            imagen: user.image,
           },
           token,
         });
