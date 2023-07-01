@@ -223,6 +223,7 @@ const login = async (req, res, next) => {
           user: {
             email,
             _id: user._id,
+            rol: user.rol,
           },
           token,
         });
