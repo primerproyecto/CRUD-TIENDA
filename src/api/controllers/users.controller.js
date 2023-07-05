@@ -255,7 +255,7 @@ const forgotPassword = async (req, res, next) => {
     if (userDb) {
       // si el usuario existe hacemos redirect al otro controlador que se encarga del envio y actualizacion
       return res.redirect(
-        `http://localhost:8081/api/v1/users/forgotpassword/sendPassword/${userDb._id}`
+        `https://crud-tienda-production.up.railway.app/api/v1/users/forgotpassword/sendPassword/${userDb._id}`
       );
     } else {
       // este usuario no esta en la base datos, le mandamos un 404 y le que no esta registrado
