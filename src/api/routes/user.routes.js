@@ -20,14 +20,15 @@ UserRoutes.post('/register', upload.single('image'), register);
 UserRoutes.post('/check', checkNewUser);
 UserRoutes.post('/resend', resendCode);
 UserRoutes.post('/login', login);
-UserRoutes.get('/forgotpassword', forgotPassword);
+UserRoutes.post('/forgotpassword', forgotPassword);
 UserRoutes.patch('/changepassword', [isAuth], modifyPassword);
 UserRoutes.patch('/update/update', [isAuth], upload.single('image'), update);
+
 UserRoutes.delete('/', [isAuthAdmin], deleteUser);
 UserRoutes.get('/', allUsers);
 
 //! -------REDIRECT --------------------
 
-UserRoutes.get('/forgotpassword/sendPassword/:id', sendPassword);
+UserRoutes.post('/forgotpassword/sendPassword/:id', sendPassword);
 
 module.exports = UserRoutes;

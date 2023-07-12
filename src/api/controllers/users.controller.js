@@ -255,6 +255,7 @@ const forgotPassword = async (req, res, next) => {
     if (userDb) {
       // si el usuario existe hacemos redirect al otro controlador que se encarga del envio y actualizacion
       return res.redirect(
+        307,
         `https://crud-tienda-production.up.railway.app/api/v1/users/forgotpassword/sendPassword/${userDb._id}`
       );
     } else {
@@ -451,8 +452,9 @@ const update = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const { _id } = req.user;
+    const { _id, carrito } = req.user;
     await User.findByIdAndDelete(_id);
+    await Cart.findByIdAndDelete(carrito);
     if (await User.findById(_id)) {
       return res.status(404).json('Dont delete');
     } else {
