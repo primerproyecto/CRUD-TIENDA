@@ -113,27 +113,23 @@ const borrarCarrito = async (req, res, next) => {
 SE PASA POR BODY EL productId y por PARAMS el carritoId
 */
 const agregarProductoAlCarrito = async (req, res) => {
-  console.log('que viene en el user', req.user);
+  /* console.log('que viene en el user', req.user); */
   try {
     const carritoId = req.params.carritoId;
     const productoId = req.body.products[0].productId;
 
     const karrito = await Cart.findById(carritoId);
-    //SI TIENE EL PRODUCTO QUE LE MANDO LE SUMO UNO A LA CANTIDAD
-    karrito.products?.map((product) => {
-      if (product.productId.toString() == productoId) {
-        product.cantidad = product.cantidad + 1;
-      }
-    });
-    //VUELVO A COMPROBAR SI YA ESTA AÑADIDO Y SI NO LO ESTA LO AÑADIMOS CON UN PUSH
-    const existeProducto = karrito.products.some(
-      (product) => product.productId.toString() == productoId
+
+    // Buscar el producto en el carrito
+    const productoEnCarrito = karrito.products.find(
+      (product) => product.productId.toString() === productoId
     );
-    if (!existeProducto) {
-      karrito.products.push(...karrito.products, {
-        productId: productoId,
-        cantidad: 1,
-      });
+    if (productoEnCarrito) {
+      // Si el producto ya está en el carrito, incrementar la cantidad
+      productoEnCarrito.cantidad += 1;
+    } else {
+      // Si el producto no está en el carrito, agregarlo con cantidad 1
+      karrito.products.push({ productId: productoId, cantidad: 1 });
     }
 
     await karrito.save();
