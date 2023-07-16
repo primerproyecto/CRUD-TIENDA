@@ -118,7 +118,9 @@ const agregarProductoAlCarrito = async (req, res) => {
     const carritoId = req.params.carritoId;
     const productoId = req.body.products[0].productId;
 
-    const karrito = await Cart.findById(carritoId);
+    const karrito = await Cart.findById(carritoId).populate(
+      'products.productId'
+    );
 
     // Buscar el producto en el carrito
     const productoEnCarrito = karrito.products.find(
