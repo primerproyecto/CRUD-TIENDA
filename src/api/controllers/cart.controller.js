@@ -71,7 +71,9 @@ const agregarACarrito = async (req, res, next) => {
 //MANDAR EL CARRITO DE UN USUARIO
 const todoMiCarrito = async (req, res, next) => {
   try {
-    const usuario = await Cart.findById(req.params.id).populate('products');
+    const usuario = await Cart.findById(req.params.id).populate(
+      'products.productId'
+    );
 
     res.status(200).json(usuario);
   } catch (error) {
@@ -121,11 +123,16 @@ const agregarProductoAlCarrito = async (req, res) => {
     const karrito = await Cart.findById(carritoId).populate(
       'products.productId'
     );
+    console.log('que es karrito con populate products.productId', karrito);
 
     // Buscar el producto en el carrito
-    const productoEnCarrito = karrito.products.find(
-      (product) => product.productId.toString() === productoId
-    );
+    const productoEnCarrito = karrito.products.find((product) => {
+      console.log(
+        'que es product.productId.toString()',
+        product.productId._id.toString()
+      );
+      return product.productId._id.toString() === productoId;
+    });
     if (productoEnCarrito) {
       // Si el producto ya está en el carrito, incrementar la cantidad
       productoEnCarrito.cantidad += 1;
