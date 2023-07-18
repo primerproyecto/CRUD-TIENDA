@@ -24,7 +24,7 @@ UserRoutes.post('/forgotpassword', forgotPassword);
 UserRoutes.patch('/changepassword', [isAuth], modifyPassword);
 UserRoutes.patch('/update/update', [isAuth], upload.single('image'), update);
 
-UserRoutes.delete('/', [isAuthAdmin], deleteUser);
+UserRoutes.delete('/', [isAuth], deleteUser);
 UserRoutes.get('/', allUsers);
 
 //! -------REDIRECT --------------------
